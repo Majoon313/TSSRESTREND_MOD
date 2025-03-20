@@ -308,7 +308,7 @@ TSSRESTREND <- function(
 
   if (test.Method == "RESTREND") {
     # ===== No breakpoints, Results calculated using the RESTREND function =====
-    result <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig)
+    result <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig, print_stuff = print_stuff)
 
   }else if (test.Method == "seg.RESTREND") {
     # ===== breakpoints in the VPR/VCR residuals, Results calculated using the seg.RESTREND function =====
@@ -351,7 +351,7 @@ TSSRESTREND <- function(
   }
   # else if (result$summary$Total.Change == 0){
   #   browser("Failure here somewhere, Take a look and see what the options are")
-  #   # result2 <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig)
+  #   # result2 <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig, print_stuff = print_stuff)
   # } else if (is.na(result$summary$Total.Change)){
   #   browser("Failure here somewhere, Take a look and see what the options are")
   # }
