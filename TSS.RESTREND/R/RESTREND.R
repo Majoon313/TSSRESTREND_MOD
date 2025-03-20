@@ -20,7 +20,7 @@
 #' restrend <- RESTREND(stdRESTREND$max.NDVI, stdRESTREND$acc.precip, stdRESTREND$index)
 #' print(restrend)
 
-RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retnonsig=FALSE) {
+RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retnonsig=FALSE, print_stuff = TRUE) {
   # ==============================================================================================
   # ========== Sanity check the input data ==========
   while (TRUE) {
@@ -84,7 +84,9 @@ RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retno
     # VPR/VCR failed
     Metd = "indeterminate"
     if (!retnonsig){
+      if(print_stuff==TRUE){
       print("VPR significance below critical threshold")
+        }
       tot.ch <- FALSE
       change <- FALSE
       overview <- data.frame(
@@ -111,7 +113,9 @@ RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retno
     # VPR/VCR is significant but negative
     Metd = "IND-agr?"
     if (!retnonsig){
+      if(print_stuff==TRUE){
       print("VPR slope is negative")
+        }
       tot.ch <- FALSE
       change <- FALSE
 
