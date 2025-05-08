@@ -6,7 +6,7 @@
 #'
 #' @author Arden Burrell, arden.burrell@unsw.edu.au
 #'
-#' @importFrom strucchange sctest
+#' nehme hier importFrom strucchange sctest raus um eigenes strucchange zu verwenden
 #' @importFrom broom glance
 #'
 #' @inheritParams TSSRESTREND
