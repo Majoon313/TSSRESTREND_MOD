@@ -8,7 +8,7 @@
 #'
 #' @author Arden Burrell, arden.burrell@unsw.edu.au
 #'
-#' ###@importFrom strucchange sctest rausgenommen um strucchangeRcpp_mod nutzen zu können
+#' strucchange sctest importFrom rausgenommen um strucchangeRcpp_mod nutzen zu können
 #'
 #' @inheritParams TSSRESTREND
 #' @param tm.b4
