@@ -65,10 +65,10 @@ VPR.BFAST <- function(CTSR.VI, CTSR.RF, CTSR.TM=NULL, season="none", BFAST.raw=F
 
   # ===== perform the BFAST =====
   if (BFAST.raw){
-    bf.fit <- bfast_mod(CTSR.VI, h = h, season = "harmonic", max.iter = 3, level = 0.05, print_stuff = print_stuff)
+    bf.fit <- bfast(CTSR.VI, h = h, season = "harmonic", max.iter = 3, level = 0.05, print_stuff = print_stuff)
     bft <- "raw.VI"
   } else {
-    bf.fit <- bfast_mod(resid.ts, h = h, season = season, max.iter = 3, level = 0.05, print_stuff = print_stuff)
+    bf.fit <- bfast(resid.ts, h = h, season = season, max.iter = 3, level = 0.05, print_stuff = print_stuff)
     bft <- "CTSR.VPR"
     #browser()
   }
