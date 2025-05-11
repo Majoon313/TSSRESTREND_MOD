@@ -5,7 +5,7 @@
 #' optimal accumulated precipitation and regresses it with a dummy variable that is 0 before the breakpoint and 1
 #' after it
 #'
-#' ###@importFrom strucchange sctest rausgenommen um strucchangeRcpp_mod zu nutzen
+#' strucchange sctest rausgenommen um strucchangeRcpp_mod zu nutzen
 #' @importFrom broom glance
 #' @author Arden Burrell, arden.burrell@unsw.edu.au
 #'
