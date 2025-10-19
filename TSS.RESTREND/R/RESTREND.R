@@ -161,7 +161,7 @@ RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retno
   fin <- RES$fitted.values[end(RES$fitted.values)[1]]
   change <- fin - init
   tot.ch = change
-  if ((R2.pval > 0.10) & (!retnonsig)){
+  if ((R2.pval > sig) & (!retnonsig)){
     tot.ch = 0
   }
 
@@ -190,6 +190,7 @@ RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retno
   )
 
 }
+
 
 
 
