@@ -255,14 +255,14 @@ seg.VPR <- function(
 
   # ===== Work out the total change =====
 
-  # Check if residual change and the VPR/VCR breakheights meet 0.10 significance levels
+  # Check if residual change and the VPR/VCR breakheights meet 0.10 significance levels #old: exchanged by "sig" 19.10.25
   if  (!retnonsig){
     tc <- c(0, 0)
-    if (R3.pval < 0.10) {
+    if (R3.pval < sig) {
       tc[1] = change
     }
 
-    if (bp.pval < 0.10) {
+    if (bp.pval < sig) {
       tc[2] = breakheight
     }
   }else{
@@ -290,3 +290,4 @@ seg.VPR <- function(
     TSSRmodels = models, acum.df = acum.df), class = "TSSRESTREND")
     )
 }
+
