@@ -110,7 +110,7 @@ seg.RESTREND <- function(anu.VI, acu.RF, VI.index, breakpoint, acu.TM = NULL, si
   fin <- bpanalysis$fitted.values[end(bpanalysis$fitted.values)[1]]
   change <- as.numeric(fin - init)
   tot.ch = change
-  if ((R2.pval > 0.10) & (!retnonsig)){
+  if ((R2.pval > sig) & (!retnonsig)){
     tot.ch = 0
   }
 
@@ -138,3 +138,4 @@ seg.RESTREND <- function(anu.VI, acu.RF, VI.index, breakpoint, acu.TM = NULL, si
   )
 
 }
+
