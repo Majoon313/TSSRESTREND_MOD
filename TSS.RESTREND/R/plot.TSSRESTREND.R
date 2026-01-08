@@ -527,6 +527,20 @@ plot.TSSRESTREND <- function(x, plots="all", sig=0.05, ...){
         pch = 16,xlab = "Year",ylab = "Residuals", col = "orange",
         main = "RESTREND", ylim = c(-m.range, m.range)
         )
+      #*******************************
+      #hier eingefuegt
+      if (!is.null(x$summary$residual.start) &&
+    !is.null(x$summary$residual.end)) {
+
+  usr <- par("usr")
+  rect(
+    x$summary$residual.start, usr[3],
+    x$summary$residual.end,   usr[4],
+    col = rgb(0.85, 0.85, 0.85, 0.4),
+    border = NA
+  )
+}
+      #*******************************
       par(new = T)
       # trend line
       plot(
@@ -542,9 +556,30 @@ plot.TSSRESTREND <- function(x, plots="all", sig=0.05, ...){
       R.pval = glance(RES)$p.value
       # +++++ Add a bar for the Total Change +++++
 
-      top <- x$TSSRmodels$resid.fit$fitted.values[len]
-      bot <- x$TSSRmodels$resid.fit$fitted.values[1]
-      r.c <- top - bot
+      #ersetze diesen block
+      #top <- x$TSSRmodels$resid.fit$fitted.values[len]
+      #bot <- x$TSSRmodels$resid.fit$fitted.values[1]
+      #r.c <- top - bot
+
+      #******************************
+      year <- c(start:end)
+
+if (!is.null(x$summary$residual.start) &&
+    !is.null(x$summary$residual.end)) {
+
+  idx <- which(year >= x$summary$residual.start &
+               year <= x$summary$residual.end)
+
+  bot <- x$TSSRmodels$resid.fit$fitted.values[idx[1]]
+  top <- x$TSSRmodels$resid.fit$fitted.values[idx[length(idx)]]
+} else {
+  bot <- x$TSSRmodels$resid.fit$fitted.values[1]
+  top <- x$TSSRmodels$resid.fit$fitted.values[len]
+}
+
+r.c <- top - bot
+
+      #******************************
       arrows(
         (end + 0.5), bot, x1 = (end + 0.5), y1 = top,
         length = 0.075, angle = 90, code = 3, col = "red", lwd = 2
@@ -639,6 +674,7 @@ plot.TSSRESTREND <- function(x, plots="all", sig=0.05, ...){
     }
   }
 }
+
 
 
 
