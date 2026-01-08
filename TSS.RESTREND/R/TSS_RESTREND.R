@@ -153,7 +153,7 @@ TSSRESTREND <- function(
   CTSR.VI, ACP.table = FALSE, ACT.table = NULL, CTSR.RF = FALSE, CTSR.TM = NULL,
   anu.VI = FALSE, acu.RF = FALSE, acu.TM = NULL, VI.index = FALSE, rf.b4 = FALSE,
   rf.af = FALSE, sig = 0.05, season = "none", exclude = 0, allow.negative = FALSE,
-  allowneg.retest = FALSE, h = 0.15, retnonsig=FALSE){
+  allowneg.retest = FALSE, h = 0.15, retnonsig=FALSE, residual.start = NULL, residual.end = NULL){
 
   # ==============================================================================================
   # ========== Sanity check the input data ==========
@@ -308,12 +308,12 @@ TSSRESTREND <- function(
 
   if (test.Method == "RESTREND") {
     # ===== No breakpoints, Results calculated using the RESTREND function =====
-    result <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig, print_stuff = print_stuff)
+    result <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig, print_stuff = print_stuff, residual.start = residual.start, residual.end = residual.end)
 
   }else if (test.Method == "seg.RESTREND") {
     # ===== breakpoints in the VPR/VCR residuals, Results calculated using the seg.RESTREND function =====
     breakpoint = as.integer(res.chow$bp.summary[2])
-    result <- seg.RESTREND(anu.VI, acu.RF, VI.index, brkp, acu.TM=acu.TM, sig=sig, retnonsig=retnonsig)
+    result <- seg.RESTREND(anu.VI, acu.RF, VI.index, brkp, acu.TM=acu.TM, sig=sig, retnonsig=retnonsig, residual.start = residual.start, residual.end = residual.end)
 
   }else if (test.Method == "seg.VPR") {
     # ===== breakpoints in the VPR/VCR, Results calculated using the seg.VPR function =====
@@ -340,7 +340,7 @@ TSSRESTREND <- function(
     # +++++ Perform segmented VPR/VCR calculation  +++++
     breakpoint = as.integer(res.chow$bp.summary[2])
     # print(brkp)
-    result <- seg.VPR(anu.VI, acu.RF, VI.index, brkp, rf.b4, rf.af, acu.TM, tm.b4, tm.af, sig=sig, retnonsig=retnonsig)
+    result <- seg.VPR(anu.VI, acu.RF, VI.index, brkp, rf.b4, rf.af, acu.TM, tm.b4, tm.af, sig=sig, retnonsig=retnonsig, residual.start = residual.start, residual.end = residual.end)
   }
   # ========== New (in version 0.3.0) Sanity check on Total change values ==========
   # +++ Checks to see if value for total change fall within a sane range +++
@@ -386,4 +386,5 @@ TSSRESTREND <- function(
   #return the results
   return(result)
 }
+
 
