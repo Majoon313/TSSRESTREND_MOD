@@ -34,7 +34,7 @@
 
 seg.VPR <- function(
   anu.VI, acu.RF, VI.index, breakpoint, rf.b4, rf.af,
-  acu.TM = NULL,  tm.b4 = NULL, tm.af = NULL, sig = 0.05, retnonsig=FALSE
+  acu.TM = NULL,  tm.b4 = NULL, tm.af = NULL, sig = 0.05, retnonsig=FALSE,residual.start = NULL, residual.end = NULL
   ) {
   # ==============================================================================================
   # ========== Sanity check the input data ==========
@@ -236,10 +236,30 @@ seg.VPR <- function(
   breakheight <- m["segVPR.fit", "Break.Height"]
   bp.pval <- coef(summary(segVPR.fit))["breakpoint.var","Pr(>|t|)"]
 
-  # work out the total  residual change (to add to get the total change)
-  init <- bpanalysis$fitted.values[1]
-  fin <- bpanalysis$fitted.values[end(bpanalysis$fitted.values)[1]]
-  change <- as.numeric(fin - init)
+ # # work out the total  residual change (to add to get the total change)
+# init <- bpanalysis$fitted.values[1]
+# fin <- bpanalysis$fitted.values[end(bpanalysis$fitted.values)[1]]
+# change <- as.numeric(fin - init)
+
+  #*****************************************
+  #hier eingefuegt
+  years <- ti
+
+if (is.null(residual.start)) residual.start <- min(years)
+if (is.null(residual.end))   residual.end   <- max(years)
+if (residual.start > residual.end)
+  stop("residual.start must be <= residual.end")
+
+win <- years >= residual.start & years <= residual.end
+idx <- which(win)
+if (!length(idx))
+  stop("Residual window does not overlap with time series.")
+
+fv <- bpanalysis$fitted.values
+
+change <- as.numeric(fv[idx[length(idx)]] - fv[idx[1]])
+
+  #****************************************
   # ===== store all the relevant time series values ====
   if (!is.null(acu.TM)) {
     # has temperature data
@@ -290,4 +310,5 @@ seg.VPR <- function(
     TSSRmodels = models, acum.df = acum.df), class = "TSSRESTREND")
     )
 }
+
 
