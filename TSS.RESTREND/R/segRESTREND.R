@@ -22,7 +22,7 @@
 #' brkp <-  as.integer(11)
 #' resu <- seg.RESTREND(segRESTREND$max.NDVI, segRESTREND$acc.precip, segRESTREND$index, brkp)
 
-seg.RESTREND <- function(anu.VI, acu.RF, VI.index, breakpoint, acu.TM = NULL, sig=0.05, retnonsig=FALSE){
+seg.RESTREND <- function(anu.VI, acu.RF, VI.index, breakpoint, acu.TM = NULL, sig=0.05, retnonsig=FALSE,residual.start = NULL, residual.end = NULL){
   # ==============================================================================================
   # ========== Sanity check the input data ==========
   while (TRUE) {
@@ -105,14 +105,35 @@ seg.RESTREND <- function(anu.VI, acu.RF, VI.index, breakpoint, acu.TM = NULL, si
   R2.SCT <- NaN
   m["RESTREND.fit", ] <- c(R2.slpe, R2.tcoef, R2.intr,R2.pval, R2.Rval, R2.BH, R2.SC, R2.SCT)
 
-  # Calculate the total change
-  init <- bpanalysis$fitted.values[1]
-  fin <- bpanalysis$fitted.values[end(bpanalysis$fitted.values)[1]]
-  change <- as.numeric(fin - init)
-  tot.ch = change
-  if ((R2.pval > sig) & (!retnonsig)){
-    tot.ch = 0
-  }
+ # # Calculate the total change
+# init <- bpanalysis$fitted.values[1]
+# fin <- bpanalysis$fitted.values[end(bpanalysis$fitted.values)[1]]
+# change <- as.numeric(fin - init)
+# tot.ch = change
+
+#*****************************
+  #hier eingefuegt
+ years <- ti
+
+if (is.null(residual.start)) residual.start <- min(years)
+if (is.null(residual.end))   residual.end   <- max(years)
+if (residual.start > residual.end)
+  stop("residual.start must be <= residual.end")
+
+win <- years >= residual.start & years <= residual.end
+idx <- which(win)
+if (!length(idx))
+  stop("Residual window does not overlap with time series.")
+
+fv <- bpanalysis$fitted.values
+
+change <- fv[idx[length(idx)]] - fv[idx[1]]
+tot.ch <- change
+#****************************
+  
+if ((R2.pval > sig) & (!retnonsig)){
+  tot.ch = 0
+ }
 
   # ===== Build and return the results =====
   overview <- data.frame(
@@ -138,4 +159,5 @@ seg.RESTREND <- function(anu.VI, acu.RF, VI.index, breakpoint, acu.TM = NULL, si
   )
 
 }
+
 
