@@ -20,7 +20,7 @@
 #' restrend <- RESTREND(stdRESTREND$max.NDVI, stdRESTREND$acc.precip, stdRESTREND$index)
 #' print(restrend)
 
-RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retnonsig=FALSE, print_stuff = TRUE) {
+RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retnonsig=FALSE, print_stuff = TRUE,residual.start = NULL, residual.end = NULL) {
   # ==============================================================================================
   # ========== Sanity check the input data ==========
   while (TRUE) {
@@ -156,14 +156,40 @@ RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retno
   R2.SCT <- NaN
   m["RESTREND.fit", ] <- c(R2.slpe,R2.tcoef, R2.intr,R2.pval, R2.Rval, R2.BH, R2.SC, R2.SCT)
 
-  # Calculate the total change
-  init <- RES$fitted.values[1]
-  fin <- RES$fitted.values[end(RES$fitted.values)[1]]
-  change <- fin - init
-  tot.ch = change
-  if ((R2.pval > sig) & (!retnonsig)){
-    tot.ch = 0
+  # # Calculate the total change
+# init <- RES$fitted.values[1]
+# fin <- RES$fitted.values[end(RES$fitted.values)[1]]
+# change <- fin - init
+# tot.ch = change
+# if ((R2.pval > sig) & (!retnonsig)){
+#   tot.ch = 0
+# }
+
+  #*****************************
+  #eingefuegt um change fuer spezifischen zeitraum zu rechnen
+  
+  # Calculate the change from RES fitted values, optionally within a window
+years <- ti  # ti ist bereits time(anu.VI)
+
+if (is.null(residual.start)) residual.start <- min(years)
+if (is.null(residual.end))   residual.end   <- max(years)
+
+win <- years >= residual.start & years <= residual.end
+
+if (!any(win)) {
+  stop("Residual window does not overlap with time series.")
+}
+
+fv <- RES$fitted.values
+init <- fv[which(win)[1]]
+fin  <- fv[tail(which(win), 1)]
+change <- fin - init  
+
+  tot.ch <- change 
+  if ((R2.pval > sig) & (!retnonsig)) { 
+    tot.ch <- 0 
   }
+  #*****************************
 
   # ===== Build and return the results =====
   overview <- data.frame(
@@ -190,6 +216,7 @@ RESTREND <- function(anu.VI, acu.RF,  VI.index, acu.TM = NULL, sig = 0.05, retno
   )
 
 }
+
 
 
 
