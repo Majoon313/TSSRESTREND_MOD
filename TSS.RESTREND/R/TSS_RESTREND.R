@@ -309,7 +309,7 @@ TSSRESTREND <- function(
   if (test.Method == "RESTREND") {
     # ===== No breakpoints, Results calculated using the RESTREND function =====
     result <- RESTREND(anu.VI, acu.RF, VI.index, acu.TM=acu.TM, sig = sig, retnonsig=retnonsig, print_stuff = print_stuff, residual.start = residual.start, residual.end = residual.end)
-
+    
   }else if (test.Method == "seg.RESTREND") {
     # ===== breakpoints in the VPR/VCR residuals, Results calculated using the seg.RESTREND function =====
     breakpoint = as.integer(res.chow$bp.summary[2])
@@ -366,6 +366,11 @@ TSSRESTREND <- function(
   # Complete Time series values
   result$ts.data$CTSR.VI <- CTSR.VI
   result$ts.data$CTSR.RF <- CTSR.RF
+  #***********
+    #eingefuegt
+    result$summary$residual.start <- residual.start 
+    result$summary$residual.end <- residual.end
+  #***********
   if (!is.null(ACT.table)) {# Add Temperature if present
     result$ts.data$CTSR.TMraw <- ts(ACT.table[1, ], start = c(start(CTSR.VI)[1], start(CTSR.VI)[2]), frequency = 12)
     result$ts.data$CTSR.TM <- CTSR.TM
@@ -386,5 +391,6 @@ TSSRESTREND <- function(
   #return the results
   return(result)
 }
+
 
 
